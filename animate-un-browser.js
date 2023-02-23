@@ -4,12 +4,11 @@ class AnimateUn {
     /**
      * @param hMin 颜色 h 最小值
      * @param hMax 颜色 h 最大值
-     * @param countText 文字的数量
      * @param sizeMin 文字最小值
      * @param sizeMax 文字最大值
      * @param bgColor 背景颜色
      */
-    constructor(hMin, hMax, countText = 150, sizeMin = 50, sizeMax = 350, bgColor) {
+    constructor(bgColor, hMin, hMax,  sizeMin = 50, sizeMax = 350) {
         this.isPlaying = true // 默认自动播放
 
         this.mouseX = 0
@@ -21,10 +20,10 @@ class AnimateUn {
             bgColor: bgColor
         }
         this.configText = {
-            fontSize: 30,
+            fontSize: 40,
 
-            characterWidth: 30,
-            characterHeight: 30,
+            characterWidth: 40,
+            characterHeight: 40,
             timeLine: 0,                           // 时间线
 
             timeInit: new Date().getTime(),
@@ -33,7 +32,6 @@ class AnimateUn {
             y: 50,                                 // 位置 y
             width: 200,                            // text 大小
             height: 200,                           // text 大小
-            countText: countText || 150,         // text 数量
                                                    // 大小
             sizeMin: isNaN(sizeMin) ?50: sizeMin,  // 最小值
             sizeMax: isNaN(sizeMax) ?350: sizeMax, // 最大值
@@ -41,11 +39,14 @@ class AnimateUn {
             // 颜色
             colorSaturate: 100,                    // 颜色饱和度 0-100
             colorLight: 60,                        // 颜色亮度 0-100
-            hMin: isNaN(hMin) ?330: hMin,          // 色值最小
-            hMax: isNaN(hMax) ?350: hMax,          // 色值最大
+            hMin: isNaN(hMin) ?0: hMin,          // 色值最小
+            hMax: isNaN(hMax) ?360: hMax,          // 色值最大
             minOpacity: 20,                        // 透明度最小 %
             maxOpacity: 100,                       // 透明度最大 %
             opacityGrowth: 5,                      // 透明度增长值
+
+            characterArrayString: '10',
+            characterArray: [],
 
         }
 
@@ -111,6 +112,7 @@ class AnimateUn {
         document.documentElement.append(textLayer)
 
         this.configText.timeLine =  0
+        this.configText.characterArray = this.configText.characterArrayString.split('')
 
         this.draw()
         document.documentElement.addEventListener('mousemove', event => {
@@ -123,7 +125,7 @@ class AnimateUn {
 
     draw() {
 
-        if (this.configText.timeLine % 20 === 0){
+        if (this.configText.timeLine % 1 === 0){
             // text layer
             let canvasText = document.getElementById('textLayer')
             let contextText = canvasText.getContext('2d')
@@ -136,13 +138,14 @@ class AnimateUn {
             }
 
             contextText.font = `${this.configText.fontSize}px Impact`
+            // contextText.font = `${this.configText.fontSize}px JetbrainsMono`
             let width = this.configFrame.width / this.configText.characterWidth
             let height = this.configFrame.height / this.configText.characterHeight
 
             for (let i=0;i<width;i++) {
                 for (let j = 0; j < height; j++) {
-                    contextText.fillStyle = randomColor(0, 360,10, 100)
-                    contextText.fillText(String(randomInt(0,1)), i * this.configText.characterWidth, j * this.configText.characterHeight)
+                    contextText.fillStyle = randomColor(this.configText.hMin, this.configText.hMax,this.configText.minOpacity, this.configText.maxOpacity)
+                    contextText.fillText(randomChoiceFromArray(this.configText.characterArray), i * this.configText.characterWidth, j * this.configText.characterHeight)
                 }
             }
         } else {
@@ -151,9 +154,6 @@ class AnimateUn {
 
         // 建立自己的时间参考线，消除使用系统时间时导致的切换程序后时间紊乱的情况
         this.configText.timeLine = this.configText.timeLine + 1
-
-
-
 
         if (this.isPlaying) {
             window.requestAnimationFrame(() => {
@@ -164,7 +164,15 @@ class AnimateUn {
 
 }
 
-
+/**
+ * 随机返回数组任一元素
+ * @param array
+ * @returns {*}
+ */
+function randomChoiceFromArray(array){
+    let randomIndex = Number(Math.random() * (array.length - 1)).toFixed(0)
+    return array[randomIndex]
+}
 
 
 /**
@@ -173,8 +181,8 @@ class AnimateUn {
  */
 function randomColor(hMin, hMax, opacityMin, opacityMax){
     let randomH = randomInt(hMin, hMax)
-    let randomOpacity = randomFloat(opacityMin, opacityMax)
-    return `hsl(${randomH}, 100%, 50%, ${randomOpacity})`
+    let randomOpacity = randomInt(opacityMin, opacityMax)
+    return `hsl(${randomH}, 100%, 50%, ${randomOpacity}%)`
 }
 
 
