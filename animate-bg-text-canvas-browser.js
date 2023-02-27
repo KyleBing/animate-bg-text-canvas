@@ -1,6 +1,8 @@
+/**
+ * 文字动画
+ */
 
-
-class AnimateUn {
+class AnimateBgTextCanvas {
     /**
      * @param hMin 颜色 h 最小值
      * @param hMax 颜色 h 最大值
@@ -20,10 +22,10 @@ class AnimateUn {
             bgColor: bgColor
         }
         this.configText = {
-            fontSize: 40,
+            fontSize: 30,
 
-            characterWidth: 40,
-            characterHeight: 40,
+            characterWidth: 30,
+            characterHeight: 30,
             timeLine: 0,                           // 时间线
 
             timeInit: new Date().getTime(),
@@ -125,7 +127,7 @@ class AnimateUn {
 
     draw() {
 
-        if (this.configText.timeLine % 1 === 0){
+        if (this.configText.timeLine % 20 === 0){
             // text layer
             let canvasText = document.getElementById('textLayer')
             let contextText = canvasText.getContext('2d')
@@ -144,7 +146,7 @@ class AnimateUn {
 
             for (let i=0;i<width;i++) {
                 for (let j = 0; j < height; j++) {
-                    contextText.fillStyle = randomColor(this.configText.hMin, this.configText.hMax,this.configText.minOpacity, this.configText.maxOpacity)
+                    contextText.fillStyle = randomColor(this.configText.hMin, this.configText.hMax,this.configText.minOpacity, this.configText.maxOpacity,  this.configText.colorSaturate, this.configText.colorLight)
                     contextText.fillText(randomChoiceFromArray(this.configText.characterArray), i * this.configText.characterWidth, j * this.configText.characterHeight)
                 }
             }
@@ -179,10 +181,10 @@ function randomChoiceFromArray(array){
  * 随机颜色值
  * @returns string
  */
-function randomColor(hMin, hMax, opacityMin, opacityMax){
+function randomColor(hMin, hMax, opacityMin, opacityMax, saturate, light){
     let randomH = randomInt(hMin, hMax)
     let randomOpacity = randomInt(opacityMin, opacityMax)
-    return `hsl(${randomH}, 100%, 50%, ${randomOpacity}%)`
+    return `hsl(${randomH}, ${saturate}%, ${light}%, ${randomOpacity}%)`
 }
 
 

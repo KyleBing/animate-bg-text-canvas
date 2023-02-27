@@ -2,13 +2,13 @@
   "name": "animate-un",
   "version": "0.0.1",
   "description": "",
-  "main": "animate-un.js",
+  "main": "animate-bg-text-canvas.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KyleBing/animate-heart-canvas.git"
+    "url": "git+https://github.com/KyleBing/animate-bg-text-canvas.git"
   },
   "keywords": [
     "canvas",
@@ -19,9 +19,9 @@
   "author": "KyleBing",
   "license": "GPL",
   "bugs": {
-    "url": "https://github.com/KyleBing/animate-heart-canvas/issues"
+    "url": "https://github.com/KyleBing/animate-bg-text-canvas/issues"
   },
-  "homepage": "https://github.com/KyleBing/animate-heart-canvas#readme",
+  "homepage": "https://github.com/KyleBing/animate-bg-text-canvas#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   }
